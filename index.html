@@ -60,14 +60,14 @@ Say Hello!
 </div>
 <div class="wrap-input100 validate-input">
 <span class="label-input100">อัปโหลดไฟล์ข่าว</span>
-<input class="input100" type="text" id="fileUrl" name="fileUrl">
+<input class="input100" type="file" id="fileUrl" name="fileUrl">
 <span class="focus-input100"></span>
 </div>
 
 <div class="container-contact100-form-btn">
 <div class="wrap-contact100-form-btn">
 <div class="contact100-form-bgbtn"></div>
-<button class="contact100-form-btn">
+<button class="contact100-form-btn" type="submit">
 <span>
 Submit
 <i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
@@ -78,7 +78,46 @@ Submit
 </form>
 </div>
 </div>
-<div id="dropDownSelect1"></div>
+   <script>
+      document.getElementById('myForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var data = {
+          department: document.getElementById('department').value,
+          topic: document.getElementById('topic').value,
+          fileUrl: document.getElementById('fileUrl').value
+        };
+
+        fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(response => response.json())
+          .then(response => {
+            if (response.result === 'success') {
+              Swal.fire({
+                icon: 'success',
+                title: 'สำเร็จ',
+                text: 'ส่งข้อมูลเรียบร้อยแล้ว'
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'เกิดข้อผิดพลาด',
+                text: 'มีปัญหาในการส่งข้อมูล'
+              });
+            }
+          }).catch(error => {
+            Swal.fire({
+              icon: 'error',
+              title: 'เกิดข้อผิดพลาด',
+              text: 'มีปัญหาในการส่งข้อมูล'
+            });
+          });
+      });
+    </script>
 
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 
